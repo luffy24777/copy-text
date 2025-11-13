@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Send to Clipboard</title>
+    <style>
+        body { font-family: Arial; margin: 30px; }
+        textarea { width: 95%; height: 120px; }
+        button { padding: 10px 20px; margin-top: 10px; cursor: pointer; }
+        p { margin-top: 10px; color: green; }
+    </style>
+</head>
+<body>
+
+    <h2>Send Text to PC Clipboard</h2>
+    <textarea id="txt" placeholder="Type here..."></textarea>
+    <br><br>
+
+    <button onclick="send()">Send to Clipboard</button>
+    <p id="msg"></p>
+
+    <script>
+        const API_URL = "https://bd594df5c14d.ngrok-free.app/copy";
+
+        async function send() {
+            const text = document.getElementById("txt").value;
+            if (!text) return;
+
+            let res = await fetch(API_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ text })
+            });
+
+            let data = await res.json();
+            document.getElementById("msg").innerText = data.message;
+        }
+    </script>
+
+</body>
+</html>
